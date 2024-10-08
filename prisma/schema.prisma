@@ -13,9 +13,9 @@ datasource db {
 model User{
   id Int @id @default(autoincrement())
   name String
-  subname String
+  surname String
   phone String
-  adress String
+  address String
   age Int
   createdAt DateTime @default(now())
   sessions  Session[] // Relación con la tabla de sesiones

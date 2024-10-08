@@ -13,10 +13,10 @@ export async function GET() {
 export async function POST(request) {
   try {
     const body = await request.json();
-    const { name, subname, phone, adress, age } = body;
+    const { name, surname, phone, address, age } = body;
 
     const newUser = await prisma.user.create({
-      data: { name, subname, phone, adress, age },
+      data: { name, surname, phone, address, age: +age },
     });
     return NextResponse.json(newUser);
   } catch (error) {
@@ -24,6 +24,7 @@ export async function POST(request) {
     if (error instanceof Prisma.PrismaClientValidationError) {
       statusCode = 400;
     }
+    console.log(error);
     return NextResponse.json({ error: error.message }, { status: statusCode });
   }
 }
