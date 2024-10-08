@@ -18,5 +18,14 @@ model User{
   adress String
   age Int
   createdAt DateTime @default(now())
+  sessions  Session[] // Relación con la tabla de sesiones
 
+}
+
+model Session {
+  id        Int      @id @default(autoincrement())
+  userId    Int      // Relaciona la sesión con un usuario
+  user      User     @relation(fields: [userId], references: [id])
+  startTime DateTime // Tiempo de inicio de la sesión
+  endTime   DateTime? // Tiempo de fin de la sesión
 }
