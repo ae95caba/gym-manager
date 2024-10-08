@@ -15,3 +15,25 @@ export async function PUT(request, { params }) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
+
+export async function DELETE(request, { params }) {
+  try {
+    const deletedSession = await prisma.session.delete({
+      where: { id: +params.id },
+    });
+
+    return NextResponse.json(deletedSession);
+  } catch (error) {
+    return NextResponse.json(error.message);
+  }
+}
+
+export async function GET(request, { params }) {
+  const session = await prisma.session.findUnique({
+    where: { id: +params.id },
+  });
+  if (!session) {
+    return NextResponse.json("Session not found", { status: 404 });
+  }
+  return NextResponse.json(session);
+}
