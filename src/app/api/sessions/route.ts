@@ -14,7 +14,21 @@ export async function POST(request) {
     const body = await request.json();
     const { userId } = body;
 
-    console.log("linea 10");
+    // Check if the user already has an active session (without endTime)
+    const activeSession = await prisma.session.findFirst({
+      where: {
+        userId: +userId,
+        endTime: null, // Active session has no endTime
+      },
+    });
+
+    if (activeSession) {
+      return NextResponse.json(
+        { error: "User already has an active session." },
+        { status: 400 } // Bad request
+      );
+    }
+
     // Crea una nueva sesión con el tiempo de inicio (login)
     const newSession = await prisma.session.create({
       data: {
