@@ -1,9 +1,33 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/libs/prisma";
 import { Prisma } from "@prisma/client";
-export async function GET() {
-  console.log("get users");
-  const users = await prisma.user.findMany();
+
+export async function GET(request) {
+  const { searchParams } = new URL(request.url);
+  const isOnlineQuery = searchParams.get("online");
+
+  let users;
+
+  if (isOnlineQuery) {
+    // Query users who have at least one active session (endTime is null)
+    users = await prisma.user.findMany({
+      where: {
+        sessions: {
+          some: {
+            endTime: null, // Filters users who have an active session
+          },
+        },
+      },
+      include: {
+        sessions: true, // Include all sessions (optional)
+      },
+    });
+  } else {
+    // If no "online" query parameter is present, return all users
+    users = await prisma.user.findMany({
+      include: { sessions: true }, // Optional: include sessions to view related data
+    });
+  }
 
   return NextResponse.json(users, {
     headers: { "Cache-Control": "no-store" },
