@@ -6,7 +6,7 @@ export default function UserCard({ user }) {
   return (
     <div
       className="bg-slate-900 p-3 hover:bg-slate-800 hover:cursor-pointer"
-      onClick={() => router.push(`users/` + user.id)}
+      onClick={() => router.push(`miembros/` + user.id)}
     >
       <h3 className="font-bold text-2xl mb-2">{user.name}</h3>
       <p>{user.address}</p>
