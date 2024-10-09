@@ -4,11 +4,11 @@ import { Prisma } from "@prisma/client";
 
 export async function GET(request) {
   const { searchParams } = new URL(request.url);
-  const isOnlineQuery = searchParams.get("online");
+  const isOnsiteQuery = searchParams.get("onsite");
 
   let users;
 
-  if (isOnlineQuery) {
+  if (isOnsiteQuery) {
     // Query users who have at least one active session (endTime is null)
     users = await prisma.user.findMany({
       where: {
