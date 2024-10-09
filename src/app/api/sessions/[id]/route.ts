@@ -4,9 +4,25 @@ import { prisma } from "@/libs/prisma";
 // Endpoint para registrar el fin de una sesión (logout)
 export async function PUT(request, { params }) {
   try {
-    // Actualiza la sesión con el tiempo de fin (logout)
+    // Get the user ID from params
+    const userId = +params.id; // Assuming params.id is the user ID
+
+    // Retrieve the last session for the user
+    const lastSession = await prisma.session.findFirst({
+      where: { userId: userId },
+      orderBy: { startTime: "desc" }, // Assuming startTime determines the last session
+    });
+
+    if (!lastSession) {
+      return NextResponse.json(
+        { error: "No active session found for this user." },
+        { status: 404 }
+      );
+    }
+
+    // Update the last session with the endTime
     const updatedSession = await prisma.session.update({
-      where: { id: +params.id },
+      where: { id: lastSession.id }, // Update by session ID
       data: { endTime: new Date() },
     });
 
