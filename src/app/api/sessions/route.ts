@@ -18,13 +18,14 @@ export async function POST(request) {
     // Crea una nueva sesión con el tiempo de inicio (login)
     const newSession = await prisma.session.create({
       data: {
-        userId,
+        userId: +userId,
         startTime: new Date(),
       },
     });
 
     return NextResponse.json(newSession);
   } catch (error) {
+    console.log(error);
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
