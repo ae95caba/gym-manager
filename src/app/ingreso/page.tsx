@@ -21,9 +21,7 @@ export default function Ingreso() {
     }
   }
 
-  async function createSession(e) {
-    e.preventDefault();
-
+  async function createSession() {
     const options = {
       method: "POST",
       body: JSON.stringify({

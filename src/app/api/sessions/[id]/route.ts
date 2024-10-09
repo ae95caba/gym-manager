@@ -9,7 +9,7 @@ export async function PUT(request, { params }) {
 
     // Retrieve the last session for the user
     const lastSession = await prisma.session.findFirst({
-      where: { userId: userId },
+      where: { userId: userId, endTime: null },
       orderBy: { startTime: "desc" }, // Assuming startTime determines the last session
     });
 
