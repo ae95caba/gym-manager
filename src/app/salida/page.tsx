@@ -2,23 +2,19 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
-export default function Ingreso() {
+export default function Salida() {
   const router = useRouter();
   async function handleSubmit(e) {
     e.preventDefault();
     const userId = e.target.id.value;
 
     const options = {
-      method: "POST",
-      body: JSON.stringify({
-        userId,
-      }),
+      method: "PUT",
+
       headers: { "Content-Type": "application/json" },
     };
 
-    console.log(options.body);
-
-    const res = await fetch(`/api/sessions`, options);
+    const res = await fetch(`/api/sessions/${userId}`, options);
 
     const data = await res.json();
 
@@ -34,7 +30,7 @@ export default function Ingreso() {
         <label htmlFor="name">Numero de socio:</label>
         <input type="number" id="id" name="id" required />
 
-        <button type="submit">Ingresó</button>
+        <button type="submit">Salió</button>
       </form>
     </div>
   );
