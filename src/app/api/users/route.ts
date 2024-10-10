@@ -40,7 +40,14 @@ export async function POST(request) {
     const { name, surname, phone, address, age } = body;
 
     const newUser = await prisma.user.create({
-      data: { name, surname, phone, address, age: +age },
+      data: {
+        name,
+        surname,
+        phone,
+        address,
+        age: +age,
+        membershipExpiry: new Date(Date.now() + 31 * 24 * 60 * 60 * 1000), //31 days from now
+      },
     });
     return NextResponse.json(newUser);
   } catch (error) {

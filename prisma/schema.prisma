@@ -18,7 +18,9 @@ model User{
   address String
   age Int
   createdAt DateTime @default(now())
+  membershipExpiry  DateTime  
   sessions  Session[] // Relación con la tabla de sesiones
+
 
 }
 
