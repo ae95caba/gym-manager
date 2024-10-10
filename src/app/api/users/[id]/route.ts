@@ -3,7 +3,7 @@ import { prisma } from "@/libs/prisma";
 export async function GET(request, { params }) {
   const user = await prisma.user.findUnique({ where: { id: +params.id } });
   if (!user) {
-    return NextResponse.json("User not found", { status: 404 });
+    return NextResponse.json({ error: "User not found" }, { status: 404 });
   }
   return NextResponse.json(user);
 }

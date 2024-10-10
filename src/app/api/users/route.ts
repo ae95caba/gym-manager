@@ -46,7 +46,7 @@ export async function POST(request) {
         phone,
         address,
         age: +age,
-        membershipExpiry: new Date(Date.now() + 31 * 24 * 60 * 60 * 1000), //31 days from now
+        membershipExpiry: new Date(Date.now() + 31 * 24 * 60 * 60 * 1000), // Extend by 31 days from today
       },
     });
     return NextResponse.json(newUser);
@@ -56,6 +56,9 @@ export async function POST(request) {
       statusCode = 400;
     }
     console.log(error);
+    console.log("-----------------------------------------------------------");
+    console.log(error.message);
+    console.log("-----------------------------------------------------------");
     return NextResponse.json({ error: error.message }, { status: statusCode });
   }
 }

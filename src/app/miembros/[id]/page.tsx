@@ -7,7 +7,7 @@ export async function getUser(id) {
     if (!res.ok) {
       const errorData = await res.json();
 
-      throw new Error(errorData || "An error occurred"); // Throw an error with the response message
+      throw new Error(errorData.error || "An error occurred"); // Throw an error with the response message
     }
     const data = await res.json();
 

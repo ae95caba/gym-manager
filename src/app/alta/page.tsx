@@ -26,12 +26,20 @@ export default function New() {
 
     console.log(options.body);
 
-    const res = await fetch(`/api/users`, options);
-
-    const data = await res.json();
-
-    router.push("/");
-    router.refresh();
+    try {
+      const res = await fetch(`/api/users`, options);
+      if (!res.ok) {
+        const errorData = await res.json();
+        throw new Error(errorData.error || "An error occurred"); // Throw an error with the response message
+      }
+      const data = await res.json();
+      console.log(data);
+      router.push("/");
+      router.refresh();
+    } catch (error) {
+      console.log(error.message);
+      alert(error.message);
+    }
   }
   return (
     <div>
