@@ -2,16 +2,36 @@
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 export default function UserCard({ user }) {
-  const [onsite, setOnsite] = useState();
+  const [onsite, setOnsite] = useState(false);
   const router = useRouter();
 
-  /* useEffect(() => {
-    first;
+  useEffect(() => {
+    async function getLastUserSession(id) {
+      try {
+        const res = await fetch(`/api/sessions?userId=${id}&last=true`);
+        if (!res.ok) {
+          const errorData = await res.json();
+          throw new Error(errorData.error || "An error occurred"); // Throw an error with the response message
+        }
+        const data = await res.json();
 
-    return () => {
-      second;
-    };
-  }, [third]); */
+        return data;
+      } catch (error) {
+        console.log(error.message);
+      }
+    }
+
+    async function asdf() {
+      const lastUserSession = await getLastUserSession(user.id);
+      console.log(lastUserSession);
+
+      if (lastUserSession && !lastUserSession.endTime) {
+        setOnsite(true);
+      }
+    }
+
+    asdf();
+  }, []);
 
   return (
     <div
