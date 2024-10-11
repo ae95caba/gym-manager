@@ -33,6 +33,10 @@ export default function UserCard({ user }) {
     asdf();
   }, []);
 
+  const currentDate = new Date();
+  const membershipExpiryDate = new Date(user.membershipExpiry);
+  const isMembershipValid = membershipExpiryDate > currentDate;
+
   return (
     <div
       className="bg-slate-900 p-5 hover:bg-slate-800 hover:cursor-pointer flex flex-col gap-5 w-[300px]"
@@ -43,9 +47,13 @@ export default function UserCard({ user }) {
       </h3>
       <p>Nro de miembro : {user.id}</p>
 
-      <p>
-        Miembro hasta :{new Date(user.membershipExpiry).toLocaleDateString()}
-      </p>
+      <div>
+        {isMembershipValid ? (
+          <p className="text-green-500">Membresía vigente</p>
+        ) : (
+          <p className="text-red-500">Membresía expirada</p>
+        )}
+      </div>
       {onsite ? <p>Esta en el gym</p> : <p>No esta en el gym</p>}
     </div>
   );
