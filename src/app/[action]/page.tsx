@@ -58,7 +58,12 @@ export default function Ingreso({ params }) {
       router.refresh();
     } catch (error) {
       console.log(error.message);
-      alert(error.message);
+
+      Swal.fire({
+        title: `Oops`,
+        text: `${user.name} ${user.surname} ya esta en el gym`,
+        icon: "error",
+      });
     }
   }
 
@@ -89,7 +94,12 @@ export default function Ingreso({ params }) {
       router.refresh();
     } catch (error) {
       console.log(error.message);
-      alert(error.message);
+
+      Swal.fire({
+        title: `Oops`,
+        text: `${user.name} ${user.surname} no esta en el gym`,
+        icon: "error",
+      });
     }
   }
 
@@ -120,6 +130,7 @@ export default function Ingreso({ params }) {
       </form>
       {user && (
         <div>
+          <h2>Confirmar miembro:</h2>
           <UserCard user={user} />
           <button onClick={action === "ingreso" ? createSession : endSession}>
             OK

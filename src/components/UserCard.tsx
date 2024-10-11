@@ -42,7 +42,7 @@ export default function UserCard({ user }) {
         {user.name} {user.surname}
       </h3>
       <p>Nro de miembro : {user.id}</p>
-      <p>{user.address}</p>
+
       <p>
         Miembro hasta :{new Date(user.membershipExpiry).toLocaleDateString()}
       </p>
