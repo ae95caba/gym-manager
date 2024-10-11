@@ -5,6 +5,7 @@ import { getUser } from "../miembros/[id]/page";
 import UserCard from "@/components/UserCard";
 import { notFound } from "next/navigation";
 import Swal from "sweetalert2";
+import Button from "@/components/Button";
 import { useSessionContext } from "@/context/SessionContext";
 export default function IngresoSalida({ params }) {
   const { refreshOnsiteUsers } = useSessionContext();
@@ -132,32 +133,29 @@ export default function IngresoSalida({ params }) {
           }}
         />
 
-        <button
-          type="submit"
-          className="bg-white text-black px-2 rounded border border-gray-300 hover:bg-gray-200"
-        >
+        <Button type="submit">
           {action === "ingreso" ? "Ingresó" : "Salió"}
-        </button>
+        </Button>
       </form>
       {user && (
         <div className=" w-fit flex flex-col gap-5  ">
           <h2>Confirmar miembro:</h2>
           <UserCard user={user} />
           <div className="container flex justify-evenly">
-            <button
+            <Button
               onClick={action === "ingreso" ? createSession : endSession}
-              className="bg-green-500 w-[100px] text-center"
+              className="bg-green-500 w-[100px]"
             >
               OK
-            </button>
-            <button
+            </Button>
+            <Button
               onClick={() => {
                 setUser(null);
               }}
-              className="bg-red-500 w-[100px] py-3 flex justify-center"
+              className="bg-red-500 w-[100px]"
             >
               Cancel
-            </button>
+            </Button>
           </div>
         </div>
       )}

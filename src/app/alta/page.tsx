@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-
+import Button from "@/components/Button";
 export default function New() {
   const router = useRouter();
   async function handleSubmit(e) {
@@ -115,9 +115,7 @@ export default function New() {
           </div>
         </div>
 
-        <button type="submit" className="bg-white text-black p-2">
-          Crear Usuario
-        </button>
+        <Button type="submit">Crear Usuario</Button>
       </form>
     </div>
   );
