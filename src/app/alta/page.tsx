@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Button from "@/components/Button";
+import Input from "@/components/Input";
 export default function New() {
   const router = useRouter();
   async function handleSubmit(e) {
@@ -43,7 +44,7 @@ export default function New() {
   }
 
   const inputContainerStyle = "w-[300px] grid grid-cols-[7rem_15rem]  ";
-  const inputStyle = "text-black px-2";
+
   return (
     <div className="container">
       <form
@@ -54,64 +55,23 @@ export default function New() {
         <div className="flex flex-col items-center gap-5">
           <div className={inputContainerStyle}>
             <label htmlFor="name">Nombre:</label>
-            <input
-              type="text"
-              id="name"
-              name="name"
-              required
-              className={inputStyle}
-            />
+            <Input type="text" id="name" name="name" required />
           </div>
           <div className={inputContainerStyle}>
             <label htmlFor="surname">Apellido:</label>
-            <input
-              type="text"
-              id="surname"
-              name="surname"
-              required
-              className={inputStyle}
-            />
+            <Input type="text" id="surname" name="surname" required />
           </div>
           <div className={inputContainerStyle}>
             <label htmlFor="phone">Teléfono:</label>
-            <input
-              type="tel"
-              id="phone"
-              name="phone"
-              required
-              className={inputStyle}
-            />
+            <Input type="text" id="phone" name="phone" required />
           </div>
           <div className={inputContainerStyle}>
             <label htmlFor="address">Dirección:</label>
-            <input
-              type="text"
-              id="address"
-              name="address"
-              required
-              className={inputStyle}
-            />
+            <Input type="text" id="address" name="address" required />
           </div>
           <div className={inputContainerStyle}>
             <label htmlFor="age">Edad:</label>
-            <input
-              type="number"
-              id="age"
-              name="age"
-              required
-              className={inputStyle}
-              min="0"
-              onKeyDown={(e) => {
-                if (
-                  e.key.match(/[^0-9]/) &&
-                  e.key !== "Backspace" &&
-                  e.key !== "ArrowLeft" &&
-                  e.key !== "ArrowRight"
-                ) {
-                  e.preventDefault();
-                }
-              }}
-            />
+            <Input type="number" id="age" name="age" required min={0} />
           </div>
         </div>
 

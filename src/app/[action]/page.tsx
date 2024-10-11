@@ -7,6 +7,7 @@ import { notFound } from "next/navigation";
 import Swal from "sweetalert2";
 import Button from "@/components/Button";
 import { useSessionContext } from "@/context/SessionContext";
+import Input from "@/components/Input";
 export default function IngresoSalida({ params }) {
   const { refreshOnsiteUsers } = useSessionContext();
   const { action } = params;
@@ -112,26 +113,10 @@ export default function IngresoSalida({ params }) {
       <form
         id="userForm"
         onSubmit={askConfirmation}
-        className="flex gap-4 justify-center"
+        className="flex gap-4 justify-center items-center"
       >
         <label htmlFor="name">Numero de socio:</label>
-        <input
-          type="number"
-          id="id"
-          name="id"
-          className="w-20 text-black text-center"
-          required
-          onKeyDown={(e) => {
-            if (
-              e.key.match(/[^0-9]/) &&
-              e.key !== "Backspace" &&
-              e.key !== "ArrowLeft" &&
-              e.key !== "ArrowRight"
-            ) {
-              e.preventDefault();
-            }
-          }}
-        />
+        <Input type="number" id="id" name="id" required />
 
         <Button type="submit">
           {action === "ingreso" ? "Ingresó" : "Salió"}
