@@ -41,6 +41,7 @@ export default function UserCard({ user }) {
       <h3 className="font-bold text-2xl mb-2">
         {user.name} {user.surname}
       </h3>
+      <p>Nro de miembro : {user.id}</p>
       <p>{user.address}</p>
       <p>
         Miembro hasta :{new Date(user.membershipExpiry).toLocaleDateString()}
