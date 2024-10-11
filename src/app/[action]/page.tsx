@@ -5,7 +5,9 @@ import { getUser } from "../miembros/[id]/page";
 import UserCard from "@/components/UserCard";
 import { notFound } from "next/navigation";
 import Swal from "sweetalert2";
-export default function Ingreso({ params }) {
+import { useSessionContext } from "@/context/SessionContext";
+export default function IngresoSalida({ params }) {
+  const { refreshOnsiteUsers } = useSessionContext();
   const { action } = params;
   if (action !== "ingreso" && action !== "salida") {
     notFound(); // This will redirect to the 404 page
@@ -53,6 +55,7 @@ export default function Ingreso({ params }) {
         icon: "success",
         timer: 2000, // Close after 2 seconds (2000 milliseconds)
       });
+      refreshOnsiteUsers();
 
       router.push("/miembros");
       router.refresh();
@@ -89,7 +92,7 @@ export default function Ingreso({ params }) {
         icon: "success",
         timer: 2000, // Close after 2 seconds (2000 milliseconds)
       });
-
+      refreshOnsiteUsers();
       router.push("/miembros");
       router.refresh();
     } catch (error) {

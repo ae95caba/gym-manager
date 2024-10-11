@@ -1,8 +1,12 @@
 "use client";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation"; // Correct import
+import { FaPeopleGroup } from "react-icons/fa6";
+
+import { useSessionContext } from "../context/SessionContext";
 const Navbar = () => {
+  const { onsiteUsers } = useSessionContext();
   const pathname = usePathname(); // Get the current pathname
   const links = [
     { href: "/miembros", label: "Miembros" },
@@ -12,11 +16,11 @@ const Navbar = () => {
   ];
 
   return (
-    <nav className="flex justify-between p-5 bg-slate-900">
+    <nav className="flex items-center justify-between px-5 py-3 bg-slate-900">
       <div className="navbar-logo">
         <h1>MyApp</h1>
       </div>
-      <ul className="flex gap-10 ">
+      <ul className="flex gap-10 items-center ">
         {links.map(({ href, label }) => (
           <li key={href}>
             <Link
@@ -30,9 +34,13 @@ const Navbar = () => {
           </li>
         ))}
       </ul>
-      <div className="navbar-actions">
-        <button className="btn-login">Login</button>
-        <button className="btn-signup">Sign Up</button>
+      <div className="flex gap-4">
+        <div className="flex flex-col items-center">
+          <Link href="/miembros/entrenando">
+            <FaPeopleGroup size={30} />
+          </Link>
+          <span> {onsiteUsers}</span>
+        </div>
       </div>
     </nav>
   );
