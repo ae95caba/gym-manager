@@ -41,25 +41,83 @@ export default function New() {
       alert(error.message);
     }
   }
+
+  const inputContainerStyle = "w-[300px] grid grid-cols-[7rem_15rem]  ";
+  const inputStyle = "text-black px-2";
   return (
-    <div>
-      <form id="userForm" onSubmit={handleSubmit}>
-        <label htmlFor="name">Nombre:</label>
-        <input type="text" id="name" name="name" required />
+    <div className="container">
+      <form
+        id="userForm"
+        onSubmit={handleSubmit}
+        className="flex flex-col items-center gap-20"
+      >
+        <div className="flex flex-col items-center gap-5">
+          <div className={inputContainerStyle}>
+            <label htmlFor="name">Nombre:</label>
+            <input
+              type="text"
+              id="name"
+              name="name"
+              required
+              className={inputStyle}
+            />
+          </div>
+          <div className={inputContainerStyle}>
+            <label htmlFor="surname">Apellido:</label>
+            <input
+              type="text"
+              id="surname"
+              name="surname"
+              required
+              className={inputStyle}
+            />
+          </div>
+          <div className={inputContainerStyle}>
+            <label htmlFor="phone">Teléfono:</label>
+            <input
+              type="tel"
+              id="phone"
+              name="phone"
+              required
+              className={inputStyle}
+            />
+          </div>
+          <div className={inputContainerStyle}>
+            <label htmlFor="address">Dirección:</label>
+            <input
+              type="text"
+              id="address"
+              name="address"
+              required
+              className={inputStyle}
+            />
+          </div>
+          <div className={inputContainerStyle}>
+            <label htmlFor="age">Edad:</label>
+            <input
+              type="number"
+              id="age"
+              name="age"
+              required
+              className={inputStyle}
+              min="0"
+              onKeyDown={(e) => {
+                if (
+                  e.key.match(/[^0-9]/) &&
+                  e.key !== "Backspace" &&
+                  e.key !== "ArrowLeft" &&
+                  e.key !== "ArrowRight"
+                ) {
+                  e.preventDefault();
+                }
+              }}
+            />
+          </div>
+        </div>
 
-        <label htmlFor="surname">Apellido:</label>
-        <input type="text" id="surname" name="surname" required />
-
-        <label htmlFor="phone">Teléfono:</label>
-        <input type="tel" id="phone" name="phone" required />
-
-        <label htmlFor="address">Dirección:</label>
-        <input type="text" id="address" name="address" required />
-
-        <label htmlFor="age">Edad:</label>
-        <input type="number" id="age" name="age" required min="0" />
-
-        <button type="submit">Crear Usuario</button>
+        <button type="submit" className="bg-white text-black p-2">
+          Crear Usuario
+        </button>
       </form>
     </div>
   );
