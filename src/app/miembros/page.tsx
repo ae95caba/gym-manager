@@ -7,12 +7,12 @@ async function fetchUsers() {
   return data;
 }
 
-export default async function Users() {
+export default async function Miembros() {
   const users = await fetchUsers();
   console.log(users);
   return (
     <div className="container mx-auto">
-      <div className="grid grid-cols-3 gap-3 mt-10">
+      <div className="flex gap-10 flex-wrap justify-center">
         {users.map((user) => (
           <UserCard key={user.key} user={user} />
         ))}
