@@ -54,7 +54,7 @@ export default function Ingreso({ params }) {
         timer: 2000, // Close after 2 seconds (2000 milliseconds)
       });
 
-      router.push("/");
+      router.push("/miembros");
       router.refresh();
     } catch (error) {
       console.log(error.message);
@@ -90,7 +90,7 @@ export default function Ingreso({ params }) {
         timer: 2000, // Close after 2 seconds (2000 milliseconds)
       });
 
-      router.push("/");
+      router.push("/miembros");
       router.refresh();
     } catch (error) {
       console.log(error.message);
@@ -104,13 +104,18 @@ export default function Ingreso({ params }) {
   }
 
   return (
-    <div>
-      <form id="userForm" onSubmit={askConfirmation}>
+    <div className="container flex flex-col gap-20   items-center">
+      <form
+        id="userForm"
+        onSubmit={askConfirmation}
+        className="flex gap-4 justify-center"
+      >
         <label htmlFor="name">Numero de socio:</label>
         <input
           type="number"
           id="id"
           name="id"
+          className="w-20 text-black text-center"
           required
           onKeyDown={(e) => {
             if (
@@ -124,24 +129,33 @@ export default function Ingreso({ params }) {
           }}
         />
 
-        <button type="submit">
+        <button
+          type="submit"
+          className="bg-white text-black px-2 rounded border border-gray-300 hover:bg-gray-200"
+        >
           {action === "ingreso" ? "Ingresó" : "Salió"}
         </button>
       </form>
       {user && (
-        <div>
+        <div className=" w-fit flex flex-col gap-5  ">
           <h2>Confirmar miembro:</h2>
           <UserCard user={user} />
-          <button onClick={action === "ingreso" ? createSession : endSession}>
-            OK
-          </button>
-          <button
-            onClick={() => {
-              setUser(null);
-            }}
-          >
-            Cancel
-          </button>
+          <div className="container flex justify-evenly">
+            <button
+              onClick={action === "ingreso" ? createSession : endSession}
+              className="bg-green-500 w-[100px] text-center"
+            >
+              OK
+            </button>
+            <button
+              onClick={() => {
+                setUser(null);
+              }}
+              className="bg-red-500 w-[100px] py-3 flex justify-center"
+            >
+              Cancel
+            </button>
+          </div>
         </div>
       )}
     </div>

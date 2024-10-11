@@ -35,7 +35,7 @@ export default function UserCard({ user }) {
 
   return (
     <div
-      className="bg-slate-900 p-3 hover:bg-slate-800 hover:cursor-pointer"
+      className="bg-slate-900 p-5 hover:bg-slate-800 hover:cursor-pointer flex flex-col gap-5 w-fit"
       onClick={() => router.push(`/miembros/` + user.id)}
     >
       <h3 className="font-bold text-2xl mb-2">
