@@ -12,7 +12,10 @@ export default async function Miembros() {
   console.log(users);
   return (
     <div className="container mx-auto">
-      <div className="flex gap-10 flex-wrap justify-center">
+      <div
+        className="flex gap-10 flex-wrap justify-center
+      "
+      >
         {users.map((user) => (
           <UserCard key={user.key} user={user} />
         ))}

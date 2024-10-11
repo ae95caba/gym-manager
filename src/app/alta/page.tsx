@@ -34,7 +34,7 @@ export default function New() {
       }
       const data = await res.json();
       console.log(data);
-      router.push("/");
+      router.push("/miembros");
       router.refresh();
     } catch (error) {
       console.log(error.message);

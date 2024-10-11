@@ -1,6 +1,7 @@
 "use client";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
+import { formattedDate } from "@/app/miembros/[id]/page";
 export default function UserCard({ user }) {
   const [onsite, setOnsite] = useState(false);
   const router = useRouter();
@@ -39,7 +40,7 @@ export default function UserCard({ user }) {
 
   return (
     <div
-      className="bg-slate-900 p-5 hover:bg-slate-800 hover:cursor-pointer flex flex-col gap-5 w-[300px]"
+      className="bg-slate-900 p-5 hover:bg-slate-800 hover:cursor-pointer flex flex-col gap-5 w-[350px]"
       onClick={() => router.push(`/miembros/` + user.id)}
     >
       <h3 className="font-bold text-2xl mb-2">
@@ -49,12 +50,20 @@ export default function UserCard({ user }) {
 
       <div>
         {isMembershipValid ? (
-          <p className="text-green-500">Membresía vigente</p>
+          <p className="text-green-500">
+            Membresía vigente hasta: {formattedDate(user.membershipExpiry)}
+          </p>
         ) : (
-          <p className="text-red-500">Membresía expirada</p>
+          <p className="text-red-500">
+            Membresía vencida el: {formattedDate(user.membershipExpiry)}
+          </p>
         )}
       </div>
-      {onsite ? <p>Esta en el gym</p> : <p>No esta en el gym</p>}
+      {onsite ? (
+        <p>Esta en el gym</p>
+      ) : (
+        <p className="text-red-500"> No esta en el gym</p>
+      )}
     </div>
   );
 }
