@@ -1,21 +1,31 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { getUser } from "../miembros/[id]/page";
+import { getUser } from "@/libs/functions";
 import UserCard from "@/components/UserCard";
 import { notFound } from "next/navigation";
 import Swal from "sweetalert2";
 import Button from "@/components/Button";
 import { useSessionContext } from "@/context/SessionContext";
 import Input from "@/components/Input";
-export default function IngresoSalida({ params }) {
+import type { User } from "@prisma/client";
+
+interface IngresoSalidaParams {
+  action: string;
+}
+
+export default function IngresoSalida({
+  params,
+}: {
+  params: IngresoSalidaParams;
+}) {
   const { refreshOnsiteUsers } = useSessionContext();
   const { action } = params;
   if (action !== "ingreso" && action !== "salida") {
     notFound(); // This will redirect to the 404 page
   }
   const router = useRouter();
-  const [user, setUser] = useState();
+  const [user, setUser] = useState<User | undefined>(undefined);
 
   async function askConfirmation(e) {
     e.preventDefault();
@@ -35,7 +45,7 @@ export default function IngresoSalida({ params }) {
     const options = {
       method: "POST",
       body: JSON.stringify({
-        userId: user.id,
+        userId: user!.id,
       }),
       headers: { "Content-Type": "application/json" },
     };
@@ -53,7 +63,7 @@ export default function IngresoSalida({ params }) {
       console.log(data);
       Swal.fire({
         title: "Todo bien",
-        text: `${user.name} ${user.surname} ingreso con exito`,
+        text: `${user!.name} ${user!.surname} ingreso con exito`,
         icon: "success",
         timer: 2000, // Close after 2 seconds (2000 milliseconds)
       });
@@ -66,7 +76,7 @@ export default function IngresoSalida({ params }) {
 
       Swal.fire({
         title: `Oops`,
-        text: `${user.name} ${user.surname} ya esta en el gym`,
+        text: `${user!.name} ${user!.surname} ya esta en el gym`,
         icon: "error",
       });
     }
@@ -80,7 +90,7 @@ export default function IngresoSalida({ params }) {
     };
 
     try {
-      const res = await fetch(`/api/sessions/${user.id}`, options);
+      const res = await fetch(`/api/sessions/${user!.id}`, options);
       if (!res.ok) {
         const errorData = await res.json();
         throw new Error(errorData.error || "An error occurred"); // Throw an error with the response message
@@ -90,7 +100,7 @@ export default function IngresoSalida({ params }) {
       console.log(data);
       Swal.fire({
         title: `Todo bien`,
-        text: `${user.name} ${user.surname} salio con exito`,
+        text: `${user!.name} ${user!.surname} salio con exito`,
         icon: "success",
         timer: 2000, // Close after 2 seconds (2000 milliseconds)
       });
@@ -102,7 +112,7 @@ export default function IngresoSalida({ params }) {
 
       Swal.fire({
         title: `Oops`,
-        text: `${user.name} ${user.surname} no esta en el gym`,
+        text: `${user!.name} ${user!.surname} no esta en el gym`,
         icon: "error",
       });
     }
@@ -135,7 +145,7 @@ export default function IngresoSalida({ params }) {
             </Button>
             <Button
               onClick={() => {
-                setUser(null);
+                setUser(undefined);
               }}
               className="bg-red-500 w-[100px]"
             >

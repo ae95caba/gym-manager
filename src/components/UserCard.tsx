@@ -1,7 +1,8 @@
 "use client";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
-import { formattedDate } from "@/app/miembros/[id]/page";
+import { formattedDate } from "@/libs/functions";
+
 export default function UserCard({ user }) {
   const [onsite, setOnsite] = useState(false);
   const router = useRouter();

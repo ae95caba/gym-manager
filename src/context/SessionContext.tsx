@@ -2,12 +2,32 @@
 "use client"; // Add this at the top to indicate this is a Client Component
 import React, { createContext, useState, useContext, useEffect } from "react";
 
-const SessionContext = createContext();
+// Define the shape of the context value
+interface SessionContextType {
+  onsiteUsers: number;
+  refreshOnsiteUsers: () => void;
+}
 
-export const useSessionContext = () => useContext(SessionContext);
+// Define the props for the provider
+interface SessionProviderProps {
+  children: ReactNode;
+}
 
-export const SessionProvider = ({ children }) => {
-  const [onsiteUsers, setOnsiteUsers] = useState(0);
+// Create the context with a default value
+const SessionContext = createContext<SessionContextType | undefined>(undefined);
+
+export const useSessionContext = (): SessionContextType => {
+  const context = useContext(SessionContext);
+  if (!context) {
+    throw new Error("useSessionContext must be used within a SessionProvider");
+  }
+  return context;
+};
+
+export const SessionProvider: React.FC<SessionProviderProps> = ({
+  children,
+}) => {
+  const [onsiteUsers, setOnsiteUsers] = useState<number>(0);
 
   // Fetch the number of users with active sessions
   const fetchOnsiteUsers = async () => {
