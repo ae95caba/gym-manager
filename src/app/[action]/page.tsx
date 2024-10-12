@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { getUser } from "@/libs/functions";
 import UserCard from "@/components/UserCard";
@@ -9,7 +9,7 @@ import Button from "@/components/Button";
 import { useSessionContext } from "@/context/SessionContext";
 import Input from "@/components/Input";
 import type { User } from "@prisma/client";
-
+import { FormEvent } from "react";
 interface IngresoSalidaParams {
   action: string;
 }
@@ -27,9 +27,10 @@ export default function IngresoSalida({
   const router = useRouter();
   const [user, setUser] = useState<User | undefined>(undefined);
 
-  async function askConfirmation(e) {
+  async function askConfirmation(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    const userId = e.target.id.value;
+    const form = e.target as HTMLFormElement;
+    const userId = (form.elements.namedItem("id") as HTMLInputElement).value;
 
     try {
       const fetchedUser = await getUser(userId);
@@ -41,78 +42,51 @@ export default function IngresoSalida({
     }
   }
 
-  async function createSession() {
+  async function handleSession(action: "create" | "end") {
+    const method = action === "create" ? "POST" : "PUT";
+    const url =
+      action === "create" ? `/api/sessions` : `/api/sessions/${user!.id}`;
+    const body =
+      action === "create" ? JSON.stringify({ userId: user!.id }) : undefined;
+
     const options = {
-      method: "POST",
-      body: JSON.stringify({
-        userId: user!.id,
-      }),
+      method,
       headers: { "Content-Type": "application/json" },
+      body,
     };
 
-    console.log(options.body);
-
     try {
-      const res = await fetch(`/api/sessions`, options);
+      const res = await fetch(url, options);
       if (!res.ok) {
         const errorData = await res.json();
-        throw new Error(errorData.error || "An error occurred"); // Throw an error with the response message
+        throw new Error(errorData.error || "An error occurred");
       }
-      const data = await res.json();
 
+      const data = await res.json();
       console.log(data);
+
       Swal.fire({
         title: "Todo bien",
-        text: `${user!.name} ${user!.surname} ingreso con exito`,
+        text:
+          action === "create"
+            ? `${user!.name} ${user!.surname} ingresó con éxito`
+            : `${user!.name} ${user!.surname} salió con éxito`,
         icon: "success",
         timer: 2000, // Close after 2 seconds (2000 milliseconds)
       });
-      refreshOnsiteUsers();
 
-      router.push("/miembros");
-      router.refresh();
-    } catch (error) {
-      console.log(error.message);
-
-      Swal.fire({
-        title: `Oops`,
-        text: `${user!.name} ${user!.surname} ya esta en el gym`,
-        icon: "error",
-      });
-    }
-  }
-
-  async function endSession() {
-    const options = {
-      method: "PUT",
-
-      headers: { "Content-Type": "application/json" },
-    };
-
-    try {
-      const res = await fetch(`/api/sessions/${user!.id}`, options);
-      if (!res.ok) {
-        const errorData = await res.json();
-        throw new Error(errorData.error || "An error occurred"); // Throw an error with the response message
-      }
-      const data = await res.json();
-
-      console.log(data);
-      Swal.fire({
-        title: `Todo bien`,
-        text: `${user!.name} ${user!.surname} salio con exito`,
-        icon: "success",
-        timer: 2000, // Close after 2 seconds (2000 milliseconds)
-      });
       refreshOnsiteUsers();
       router.push("/miembros");
       router.refresh();
     } catch (error) {
-      console.log(error.message);
+      console.log((error as Error).message);
 
       Swal.fire({
-        title: `Oops`,
-        text: `${user!.name} ${user!.surname} no esta en el gym`,
+        title: "Oops",
+        text:
+          action === "create"
+            ? `${user!.name} ${user!.surname} ya está en el gym`
+            : `${user!.name} ${user!.surname} no está en el gym`,
         icon: "error",
       });
     }
@@ -138,8 +112,13 @@ export default function IngresoSalida({
           <UserCard user={user} />
           <div className="container flex justify-evenly">
             <Button
-              onClick={action === "ingreso" ? createSession : endSession}
-              className="bg-green-500 w-[100px]"
+              onClick={() => {
+                if (action === "ingreso") {
+                  handleSession("create");
+                } else {
+                  handleSession("end");
+                }
+              }}
             >
               OK
             </Button>

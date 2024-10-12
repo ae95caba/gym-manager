@@ -1,17 +1,21 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useRouter } from "next/navigation";
 import Button from "@/components/Button";
 import Input from "@/components/Input";
+import { FormEvent } from "react";
 export default function New() {
   const router = useRouter();
-  async function handleSubmit(e) {
+  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    const name = e.target.name.value;
-    const surname = e.target.surname.value;
-    const phone = e.target.phone.value;
-    const address = e.target.address.value;
-    const age = e.target.age.value;
+    const form = e.target as HTMLFormElement; // Cast e.target to HTMLFormElement
+    const formData = new FormData(form); // Create FormData object to extract values
+
+    const name = formData.get("name") as string; // Use FormData to get values
+    const surname = formData.get("surname") as string;
+    const phone = formData.get("phone") as string;
+    const address = formData.get("address") as string;
+    const age = formData.get("age") as string; // Consider using number if age is a number
 
     const options = {
       method: "POST",
@@ -38,8 +42,13 @@ export default function New() {
       router.push("/miembros");
       router.refresh();
     } catch (error) {
-      console.log(error.message);
-      alert(error.message);
+      if (error instanceof Error) {
+        console.log(error.message);
+        alert(error.message);
+      } else {
+        console.log("An unexpected error occurred");
+        alert("An unexpected error occurred");
+      }
     }
   }
 

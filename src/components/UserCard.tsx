@@ -2,13 +2,13 @@
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { formattedDate } from "@/libs/functions";
-
-export default function UserCard({ user }) {
+import type { User } from "@prisma/client";
+export default function UserCard({ user }: { user: User }) {
   const [onsite, setOnsite] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
-    async function getLastUserSession(id) {
+    async function getLastUserSession(id: number) {
       try {
         const res = await fetch(`/api/sessions?userId=${id}&last=true`);
         if (!res.ok) {
@@ -19,7 +19,12 @@ export default function UserCard({ user }) {
 
         return data;
       } catch (error) {
-        console.log(error.message);
+        if (error instanceof Error) {
+          console.log(error.message);
+          // Handle specific error types if needed
+        } else {
+          console.log("An unexpected error occurred");
+        }
       }
     }
 

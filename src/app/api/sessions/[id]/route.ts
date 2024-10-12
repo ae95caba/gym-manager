@@ -1,8 +1,11 @@
-import { NextResponse } from "next/server";
+import { NextResponse, NextRequest } from "next/server";
 import { prisma } from "@/libs/prisma";
 
 // Endpoint para registrar el fin de una sesión (logout)
-export async function PUT(request, { params }) {
+export async function PUT(
+  request: NextRequest,
+  { params }: { params: { id: string } }
+) {
   try {
     // Get the user ID from params
     const userId = +params.id; // Assuming params.id is the user ID
@@ -28,11 +31,16 @@ export async function PUT(request, { params }) {
 
     return NextResponse.json(updatedSession);
   } catch (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    const errorMessage =
+      error instanceof Error ? error.message : "An unexpected error occurred";
+    return NextResponse.json({ error: errorMessage }, { status: 500 });
   }
 }
 
-export async function DELETE(request, { params }) {
+export async function DELETE(
+  request: NextRequest,
+  { params }: { params: { id: string } }
+) {
   try {
     const deletedSession = await prisma.session.delete({
       where: { id: +params.id },
@@ -40,11 +48,16 @@ export async function DELETE(request, { params }) {
 
     return NextResponse.json(deletedSession);
   } catch (error) {
-    return NextResponse.json(error.message);
+    const errorMessage =
+      error instanceof Error ? error.message : "An unexpected error occurred";
+    return NextResponse.json({ error: errorMessage }, { status: 500 });
   }
 }
 
-export async function GET(request, { params }) {
+export async function GET(
+  request: NextRequest,
+  { params }: { params: { id: string } }
+) {
   const session = await prisma.session.findUnique({
     where: { id: +params.id },
   });

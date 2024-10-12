@@ -1,5 +1,6 @@
 import React from "react";
 import UserCard from "@/components/UserCard";
+import type { User } from "@prisma/client";
 async function fetchUsers() {
   const res = await fetch(`http://localhost:3000/api/users`);
 
@@ -16,8 +17,8 @@ export default async function Miembros() {
         className="flex gap-10 flex-wrap justify-center
       "
       >
-        {users.map((user) => (
-          <UserCard key={user.key} user={user} />
+        {users.map((user: User) => (
+          <UserCard key={user.id} user={user} />
         ))}
       </div>
     </div>

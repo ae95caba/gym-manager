@@ -1,8 +1,8 @@
-import { NextResponse } from "next/server";
+import { NextResponse, NextRequest } from "next/server";
 import { prisma } from "@/libs/prisma";
 import { Prisma } from "@prisma/client";
 
-export async function GET(request) {
+export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
   const isOnsiteQuery = searchParams.get("onsite");
 
@@ -34,7 +34,7 @@ export async function GET(request) {
   });
 }
 
-export async function POST(request) {
+export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
     const { name, surname, phone, address, age } = body;
@@ -51,14 +51,17 @@ export async function POST(request) {
     });
     return NextResponse.json(newUser);
   } catch (error) {
-    let statusCode = 500;
+    let statusCode = 500; // Default to 500 Internal Server Error
+
+    // Check if the error is a Prisma validation error
     if (error instanceof Prisma.PrismaClientValidationError) {
-      statusCode = 400;
+      statusCode = 400; // Bad Request for validation errors
     }
-    console.log(error);
-    console.log("-----------------------------------------------------------");
-    console.log(error.message);
-    console.log("-----------------------------------------------------------");
-    return NextResponse.json({ error: error.message }, { status: statusCode });
+
+    // Return the error response with the appropriate status code
+    return NextResponse.json(
+      { error: (error as Error).message },
+      { status: statusCode }
+    );
   }
 }

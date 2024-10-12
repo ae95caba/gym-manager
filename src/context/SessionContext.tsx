@@ -1,6 +1,12 @@
 // context/SessionContext.js
 "use client"; // Add this at the top to indicate this is a Client Component
-import React, { createContext, useState, useContext, useEffect } from "react";
+import React, {
+  createContext,
+  useState,
+  useContext,
+  useEffect,
+  ReactNode,
+} from "react";
 
 // Define the shape of the context value
 interface SessionContextType {

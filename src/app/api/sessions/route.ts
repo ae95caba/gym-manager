@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/libs/prisma";
+import { NextRequest } from "next/server";
 
-export async function GET(request) {
+export async function GET(request: NextRequest) {
   // Retrieve query parameters from the request URL
   const { searchParams } = new URL(request.url);
   const userId = searchParams.get("userId"); // Get the userId from the query parameters
@@ -33,12 +34,15 @@ export async function GET(request) {
       headers: { "Cache-Control": "no-store" },
     });
   } catch (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    // Ensure that the error is an instance of Error to safely access the message
+    const errorMessage =
+      error instanceof Error ? error.message : "An unexpected error occurred";
+    return NextResponse.json({ error: errorMessage }, { status: 500 });
   }
 }
 
 // Endpoint para registrar el inicio de una sesión (login)
-export async function POST(request) {
+export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
     const { userId } = body;
@@ -69,6 +73,9 @@ export async function POST(request) {
     return NextResponse.json(newSession);
   } catch (error) {
     console.log(error);
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    // Ensure that the error is an instance of Error to safely access the message
+    const errorMessage =
+      error instanceof Error ? error.message : "An unexpected error occurred";
+    return NextResponse.json({ error: errorMessage }, { status: 500 });
   }
 }
