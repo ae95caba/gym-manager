@@ -66,7 +66,7 @@ export default function UserCard({ user }: { user: User }) {
         )}
       </div>
       {onsite ? (
-        <p>Esta en el gym</p>
+        <p className="text-green-500">Esta en el gym</p>
       ) : (
         <p className="text-red-500"> No esta en el gym</p>
       )}

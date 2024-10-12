@@ -1,8 +1,9 @@
 import React from "react";
 import UserCard from "@/components/UserCard";
 import type { User } from "@prisma/client";
+import { BASE_API_URL } from "@/libs/constants";
 async function fetchUsers() {
-  const res = await fetch(`http://localhost:3000/api/users`);
+  const res = await fetch(`${BASE_API_URL}/api/users`);
 
   const data = await res.json();
   return data;

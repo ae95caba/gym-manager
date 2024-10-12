@@ -112,6 +112,7 @@ export default function IngresoSalida({
           <UserCard user={user} />
           <div className="container flex justify-evenly">
             <Button
+              className="bg-green-500 w-[100px]"
               onClick={() => {
                 if (action === "ingreso") {
                   handleSession("create");
@@ -123,10 +124,10 @@ export default function IngresoSalida({
               OK
             </Button>
             <Button
+              className="bg-red-500 w-[100px]"
               onClick={() => {
                 setUser(undefined);
               }}
-              className="bg-red-500 w-[100px]"
             >
               Cancel
             </Button>

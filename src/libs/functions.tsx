@@ -1,9 +1,10 @@
 // lib/userService.ts
 import type { User } from "@prisma/client";
+import { BASE_API_URL } from "./constants";
 
 export async function getUser(id: string): Promise<User | undefined> {
   try {
-    const res = await fetch(`http://localhost:3000/api/users/${id}`);
+    const res = await fetch(`${BASE_API_URL}/api/users/${id}`);
 
     if (!res.ok) {
       const errorData = await res.json();
