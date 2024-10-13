@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { formattedDate } from "@/libs/functions";
 import type { User } from "@prisma/client";
 export default function UserCard({ user }: { user: User }) {
-  const [onsite, setOnsite] = useState(undefined);
+  const [onsite, setOnsite] = useState<boolean | undefined>(undefined);
   const router = useRouter();
 
   useEffect(() => {

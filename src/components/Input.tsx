@@ -1,3 +1,4 @@
+"use client"; // This makes the component a Client Component
 import React from "react";
 
 interface InputProps {

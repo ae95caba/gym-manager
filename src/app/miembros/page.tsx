@@ -1,10 +1,9 @@
 import React from "react";
-
 import { BASE_API_URL } from "@/libs/constants";
 import UserList from "@/components/UserList";
 async function fetchUsers() {
   const res = await fetch(`${BASE_API_URL}/api/users`, {
-    cache: "no-store", // Ensures the data is fetched fresh on every request
+    next: { tags: ["users"] },
   });
 
   const data = await res.json();
