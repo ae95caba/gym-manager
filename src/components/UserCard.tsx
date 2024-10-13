@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { formattedDate } from "@/libs/functions";
 import type { User } from "@prisma/client";
 export default function UserCard({ user }: { user: User }) {
-  const [onsite, setOnsite] = useState(false);
+  const [onsite, setOnsite] = useState(undefined);
   const router = useRouter();
 
   useEffect(() => {
@@ -34,6 +34,8 @@ export default function UserCard({ user }: { user: User }) {
 
       if (lastUserSession && !lastUserSession.endTime) {
         setOnsite(true);
+      } else {
+        setOnsite(false);
       }
     }
 
@@ -65,10 +67,12 @@ export default function UserCard({ user }: { user: User }) {
           </p>
         )}
       </div>
-      {onsite ? (
+      {onsite === undefined ? (
+        <p>Cargando ...</p>
+      ) : onsite ? (
         <p className="text-green-500">Esta en el gym</p>
       ) : (
-        <p className="text-red-500"> No esta en el gym</p>
+        <p className="text-red-500">No esta en el gym</p>
       )}
     </div>
   );
