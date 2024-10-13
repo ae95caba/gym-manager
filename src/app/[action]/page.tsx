@@ -93,7 +93,7 @@ export default function IngresoSalida({
   }
 
   return (
-    <div className="container flex flex-col gap-20   items-center">
+    <div className=" flex flex-col gap-20   items-center">
       <form
         id="userForm"
         onSubmit={askConfirmation}

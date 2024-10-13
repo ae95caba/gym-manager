@@ -55,37 +55,35 @@ export default function New() {
   const inputContainerStyle = "w-[300px] grid grid-cols-[7rem_15rem]  ";
 
   return (
-    <div className="container">
-      <form
-        id="userForm"
-        onSubmit={handleSubmit}
-        className="flex flex-col items-center gap-20"
-      >
-        <div className="flex flex-col items-center gap-5">
-          <div className={inputContainerStyle}>
-            <label htmlFor="name">Nombre:</label>
-            <Input type="text" id="name" name="name" required />
-          </div>
-          <div className={inputContainerStyle}>
-            <label htmlFor="surname">Apellido:</label>
-            <Input type="text" id="surname" name="surname" required />
-          </div>
-          <div className={inputContainerStyle}>
-            <label htmlFor="phone">Teléfono:</label>
-            <Input type="text" id="phone" name="phone" required />
-          </div>
-          <div className={inputContainerStyle}>
-            <label htmlFor="address">Dirección:</label>
-            <Input type="text" id="address" name="address" required />
-          </div>
-          <div className={inputContainerStyle}>
-            <label htmlFor="age">Edad:</label>
-            <Input type="number" id="age" name="age" required min={0} />
-          </div>
+    <form
+      id="userForm"
+      onSubmit={handleSubmit}
+      className="flex flex-col items-center gap-20"
+    >
+      <div className="flex flex-col items-center gap-5">
+        <div className={inputContainerStyle}>
+          <label htmlFor="name">Nombre:</label>
+          <Input type="text" id="name" name="name" required />
         </div>
+        <div className={inputContainerStyle}>
+          <label htmlFor="surname">Apellido:</label>
+          <Input type="text" id="surname" name="surname" required />
+        </div>
+        <div className={inputContainerStyle}>
+          <label htmlFor="phone">Teléfono:</label>
+          <Input type="text" id="phone" name="phone" required />
+        </div>
+        <div className={inputContainerStyle}>
+          <label htmlFor="address">Dirección:</label>
+          <Input type="text" id="address" name="address" required />
+        </div>
+        <div className={inputContainerStyle}>
+          <label htmlFor="age">Edad:</label>
+          <Input type="number" id="age" name="age" required min={0} />
+        </div>
+      </div>
 
-        <Button type="submit">Crear Usuario</Button>
-      </form>
-    </div>
+      <Button type="submit">Crear Usuario</Button>
+    </form>
   );
 }
