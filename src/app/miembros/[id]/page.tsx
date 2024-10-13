@@ -1,6 +1,6 @@
 import React from "react";
 import Button from "@/components/Button";
-
+import { BASE_API_URL } from "@/libs/constants";
 import { getUser, formattedDate } from "@/libs/functions";
 
 interface UserProps {
@@ -10,6 +10,9 @@ interface UserProps {
 }
 
 export default async function User({ params }: UserProps) {
+  if (!BASE_API_URL) {
+    return null;
+  }
   const user = await getUser(params.id);
 
   return (

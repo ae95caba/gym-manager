@@ -10,6 +10,9 @@ async function fetchOnsiteUsers() {
 }
 
 export default async function Entrenando() {
+  if (!BASE_API_URL) {
+    return null;
+  }
   const onsiteUsers = await fetchOnsiteUsers();
   return (
     <div className="container mx-auto">
