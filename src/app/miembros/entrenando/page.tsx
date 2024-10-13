@@ -3,7 +3,9 @@ import UserCard from "@/components/UserCard";
 import type { User } from "@prisma/client";
 import { BASE_API_URL } from "@/libs/constants";
 async function fetchOnsiteUsers() {
-  const res = await fetch(`${BASE_API_URL}/api/users?onsite=true`);
+  const res = await fetch(`${BASE_API_URL}/api/users?onsite=true`, {
+    cache: "no-store", // Ensures the data is fetched fresh on every request
+  });
 
   const data = await res.json();
   return data;
