@@ -5,6 +5,7 @@ interface ButtonProps {
   onClick?: () => void;
   type?: "button" | "submit" | "reset";
   className?: string; // To allow custom classes if needed
+  disabled: boolean;
 }
 
 const Button: React.FC<ButtonProps> = ({
@@ -12,6 +13,7 @@ const Button: React.FC<ButtonProps> = ({
   onClick,
   type = "button",
   className = "",
+  disabled,
 }) => {
   const baseStyles =
     "bg-white text-black p-1 rounded border border-gray-300 hover:bg-gray-200";
@@ -27,6 +29,7 @@ const Button: React.FC<ButtonProps> = ({
       onClick={onClick}
       type={type}
       className={`${finalStyles} ${className}`}
+      disabled={disabled}
     >
       {children}
     </button>

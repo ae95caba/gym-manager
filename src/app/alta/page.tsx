@@ -86,7 +86,7 @@ export default function New() {
         </div>
       </div>
 
-      <Button type="submit">Crear usuario</Button>
+      <SubmitButton />
     </form>
   );
 }
