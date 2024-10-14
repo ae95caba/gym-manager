@@ -1,7 +1,7 @@
 // lib/userService.ts
 import type { User } from "@prisma/client";
 import { BASE_API_URL } from "./constants";
-
+import { isRedirectError } from "next/dist/client/components/redirect";
 export async function getUser(id: string): Promise<User | undefined> {
   try {
     const res = await fetch(`${BASE_API_URL}/api/users/${id}`);
@@ -27,4 +27,10 @@ export function formattedDate(date: string | number | Date): string {
     month: "2-digit",
     year: "numeric",
   });
+}
+
+export function rethrowIfRedirectError(error: unknown) {
+  if (isRedirectError(error)) {
+    throw error;
+  }
 }
