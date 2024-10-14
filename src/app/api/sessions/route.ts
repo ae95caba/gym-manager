@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/libs/prisma";
 import { NextRequest } from "next/server";
-
+import { revalidateTag } from "next/cache";
 export async function GET(request: NextRequest) {
   // Retrieve query parameters from the request URL
   const { searchParams } = new URL(request.url);
@@ -69,7 +69,7 @@ export async function POST(request: NextRequest) {
         startTime: new Date(),
       },
     });
-
+    revalidateTag(`userLastSession`);
     return NextResponse.json(newSession);
   } catch (error) {
     console.log(error);

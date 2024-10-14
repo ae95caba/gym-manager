@@ -1,6 +1,6 @@
 import { NextResponse, NextRequest } from "next/server";
 import { prisma } from "@/libs/prisma";
-
+import { revalidateTag } from "next/cache";
 // Endpoint para registrar el fin de una sesión (logout)
 export async function PUT(
   request: NextRequest,
@@ -28,7 +28,7 @@ export async function PUT(
       where: { id: lastSession.id }, // Update by session ID
       data: { endTime: new Date() },
     });
-
+    revalidateTag(`userLastSession`);
     return NextResponse.json(updatedSession);
   } catch (error) {
     const errorMessage =

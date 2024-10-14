@@ -7,7 +7,7 @@ import Input from "@/components/Input";
 import Swal from "sweetalert2";
 
 import { SubmitButton } from "@/components/SubmitButton";
-import createUser from "@/libs/asdf";
+import createUser from "@/libs/ServerActions";
 // Server action to handle user creation
 
 export default function New() {

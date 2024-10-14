@@ -1,5 +1,6 @@
 import React from "react";
-import UserCard from "./UserCard";
+
+import UserCardWithOnsiteStatus from "./UserCardWithOnsiteStatus";
 import type { User } from "@prisma/client";
 export default function UserList({ users }: { users: User[] }) {
   return (
@@ -9,7 +10,7 @@ export default function UserList({ users }: { users: User[] }) {
     "
       >
         {users.map((user: User) => (
-          <UserCard key={user.id} user={user} />
+          <UserCardWithOnsiteStatus key={user.id} user={user} />
         ))}
       </div>
     </div>
