@@ -1,18 +1,19 @@
 // src/app/New.tsx
 "use client";
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { useSearchParams, useRouter } from "next/navigation"; // Use the correct import for search parameters
 import Button from "@/components/Button";
 import Input from "@/components/Input";
 import Swal from "sweetalert2";
-import { useFormStatus } from "react-dom";
+
 import { SubmitButton } from "@/components/SubmitButton";
 import createUser from "@/libs/asdf";
 // Server action to handle user creation
 
 export default function New() {
+  const formRef = useRef(null);
   const router = useRouter(); // Get the router to manipulate the URL
-  const { pending } = useFormStatus(); // Track form submission status
+
   const searchParams = useSearchParams(); // Get the search parameters
   const status = searchParams.get("status"); // Get the status parameter from the URL
   const message = searchParams.get("message"); // Get the message parameter if exists
@@ -31,6 +32,11 @@ export default function New() {
           newSearchParams.delete("status"); // Remove the status query
           newSearchParams.delete("message"); // Remove the message query
 
+          // Reset the form after successful submission
+          if (formRef.current) {
+            formRef.current.reset(); // Reset the form fields
+          }
+
           // Update the URL without refreshing the page
           router.replace(`/alta?${newSearchParams.toString()}`);
         },
@@ -40,12 +46,19 @@ export default function New() {
         title: "Error",
         text: `There was a problem: ${message || "Unknown error"}`,
         icon: "error",
+        willClose: () => {
+          const newSearchParams = new URLSearchParams(searchParams.toString());
+          newSearchParams.delete("status");
+          newSearchParams.delete("message");
+          router.replace(`/alta?${newSearchParams.toString()}`);
+        },
       });
     }
   }, [status, message]); // Trigger effect when status or message changes
 
   return (
     <form
+      ref={formRef}
       id="userForm"
       action={createUser} // Specify the server action
       className="flex flex-col items-center gap-20"
@@ -73,7 +86,7 @@ export default function New() {
         </div>
       </div>
 
-      <Button type="submit">{pending ? "Cargando" : "Crear Usuario"}</Button>
+      <Button type="submit">Crear usuario</Button>
     </form>
   );
 }
