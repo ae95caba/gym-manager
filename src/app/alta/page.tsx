@@ -1,15 +1,18 @@
 // src/app/New.tsx
 "use client";
 import React, { useEffect } from "react";
-import { useSearchParams } from "next/navigation"; // Use the correct import for search parameters
+import { useSearchParams, useRouter } from "next/navigation"; // Use the correct import for search parameters
 import Button from "@/components/Button";
 import Input from "@/components/Input";
 import Swal from "sweetalert2";
+import { useFormStatus } from "react-dom";
 import { SubmitButton } from "@/components/SubmitButton";
 import createUser from "@/libs/asdf";
 // Server action to handle user creation
 
-export default function New({ params }) {
+export default function New() {
+  const router = useRouter(); // Get the router to manipulate the URL
+  const { pending } = useFormStatus(); // Track form submission status
   const searchParams = useSearchParams(); // Get the search parameters
   const status = searchParams.get("status"); // Get the status parameter from the URL
   const message = searchParams.get("message"); // Get the message parameter if exists
@@ -21,7 +24,16 @@ export default function New({ params }) {
         title: "Success",
         text: "User successfully created!",
         icon: "success",
-        timer: 2000, // Close after 2 seconds
+        timer: 2000, // Close after 2 seconds,
+        willClose: () => {
+          // Remove the status query parameter when the alert closes
+          const newSearchParams = new URLSearchParams(searchParams.toString());
+          newSearchParams.delete("status"); // Remove the status query
+          newSearchParams.delete("message"); // Remove the message query
+
+          // Update the URL without refreshing the page
+          router.replace(`/alta?${newSearchParams.toString()}`);
+        },
       });
     } else if (status === "error") {
       Swal.fire({
@@ -61,7 +73,7 @@ export default function New({ params }) {
         </div>
       </div>
 
-      {<Button type="submit">Crear Usuario</Button>}
+      <Button type="submit">{pending ? "Cargando" : "Crear Usuario"}</Button>
     </form>
   );
 }
