@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { getUser } from "@/libs/functions";
 import UserCard from "@/components/UserCard";
@@ -10,8 +10,8 @@ import { useSessionContext } from "@/context/SessionContext";
 import Input from "@/components/Input";
 import type { User } from "@prisma/client";
 import { FormEvent } from "react";
-
-import UserCardWithOnsiteStatus from "@/components/UserCardWithOnsiteStatus";
+import OnsiteStatus from "@/components/OnsiteStatus";
+import { getLastUserSession } from "@/components/UserCardWithOnsiteStatus";
 interface IngresoSalidaParams {
   action: string;
 }
@@ -21,7 +21,9 @@ export default function IngresoSalida({
 }: {
   params: IngresoSalidaParams;
 }) {
+  const [onsite, setOnsite] = useState(undefined);
   const formRef = useRef(null);
+  const router = useRouter();
   const { refreshOnsiteUsers } = useSessionContext();
   const { action } = params;
   if (action !== "ingreso" && action !== "salida") {
@@ -29,6 +31,17 @@ export default function IngresoSalida({
   }
 
   const [user, setUser] = useState<User | undefined>(undefined);
+
+  useEffect(() => {
+    async function setUserOnsiteState(id) {
+      const lastUserSession = await getLastUserSession(id);
+      setOnsite(lastUserSession && !lastUserSession.endTime);
+    }
+
+    if (user) {
+      setUserOnsiteState(user.id);
+    }
+  }, [user]);
 
   async function askConfirmation(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -66,7 +79,7 @@ export default function IngresoSalida({
       }
 
       const data = await res.json();
-
+      router.refresh();
       console.log(data);
 
       Swal.fire({
@@ -118,7 +131,9 @@ export default function IngresoSalida({
       {user && (
         <div className=" w-fit flex flex-col gap-5  ">
           <h2>Confirmar miembro:</h2>
-          <UserCard user={user} />
+          <UserCard user={user}>
+            <OnsiteStatus onsite={onsite} />
+          </UserCard>
           <div className="container flex justify-evenly">
             <Button
               className="bg-green-500 w-[100px]"

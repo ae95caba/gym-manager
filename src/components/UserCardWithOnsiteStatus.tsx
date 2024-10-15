@@ -2,7 +2,7 @@ import React from "react";
 import { BASE_API_URL } from "@/libs/constants";
 import UserCard from "./UserCard";
 import type { User } from "@prisma/client";
-
+import OnsiteStatus from "./OnsiteStatus";
 export async function getLastUserSession(id: number) {
   try {
     const res = await fetch(
@@ -38,13 +38,7 @@ export default async function UserCardWithOnsiteStatus({
   return (
     <div>
       <UserCard user={user}>
-        {onsite === undefined ? (
-          <p>Cargando ...</p>
-        ) : onsite ? (
-          <p className="text-green-500">Esta en el gym</p>
-        ) : (
-          <p className="text-red-500">No esta en el gym</p>
-        )}
+        <OnsiteStatus onsite={onsite} />
       </UserCard>
     </div>
   );
