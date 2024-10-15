@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { getUser } from "@/libs/functions";
 import UserCard from "@/components/UserCard";
@@ -21,12 +21,13 @@ export default function IngresoSalida({
 }: {
   params: IngresoSalidaParams;
 }) {
+  const formRef = useRef(null);
   const { refreshOnsiteUsers } = useSessionContext();
   const { action } = params;
   if (action !== "ingreso" && action !== "salida") {
     notFound(); // This will redirect to the 404 page
   }
-  const router = useRouter();
+
   const [user, setUser] = useState<User | undefined>(undefined);
 
   async function askConfirmation(e: FormEvent<HTMLFormElement>) {
@@ -76,11 +77,15 @@ export default function IngresoSalida({
             : `${user!.name} ${user!.surname} salió con éxito`,
         icon: "success",
         timer: 2000, // Close after 2 seconds (2000 milliseconds)
+        willClose: () => {
+          if (formRef.current) {
+            formRef.current.reset(); // Reset the form fields
+          }
+          setUser(undefined);
+        },
       });
 
-      refreshOnsiteUsers();
-      router.push("/miembros");
-      router.refresh();
+      refreshOnsiteUsers(); //for navbar
     } catch (error) {
       console.log((error as Error).message);
 
@@ -98,6 +103,7 @@ export default function IngresoSalida({
   return (
     <div className=" flex flex-col gap-20   items-center">
       <form
+        ref={formRef}
         id="userForm"
         onSubmit={askConfirmation}
         className="flex gap-4 justify-center items-center"
