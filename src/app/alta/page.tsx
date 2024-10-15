@@ -1,6 +1,6 @@
 // src/app/New.tsx
 "use client";
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 
 import Button from "@/components/Button";
 import Input from "@/components/Input";
@@ -11,12 +11,13 @@ import { SubmitButton } from "@/components/SubmitButton";
 // Server action to handle user creation
 
 export default function Alta() {
+  const [isPending, setIsPending] = useState(false);
   const formRef = useRef(null);
   const inputContainerStyle = "w-[300px] grid grid-cols-[7rem_15rem]";
 
   async function createUser(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-
+    setIsPending(true); // Set pending to true on submit
     // Create FormData from the form element
     const formData = new FormData(event.currentTarget);
 
@@ -77,6 +78,8 @@ export default function Alta() {
         text: `There was a problem: ${errorMessage || "Unknown error"}`,
         icon: "error",
       });
+    } finally {
+      setIsPending(false); // Reset pending status
     }
   }
 
@@ -110,7 +113,7 @@ export default function Alta() {
         </div>
       </div>
 
-      <SubmitButton />
+      <SubmitButton isPending={isPending} />
     </form>
   );
 }
