@@ -1,66 +1,90 @@
 // src/app/New.tsx
 "use client";
-import React, { useEffect, useRef } from "react";
-import { useSearchParams, useRouter } from "next/navigation"; // Use the correct import for search parameters
+import React, { useRef } from "react";
+
 import Button from "@/components/Button";
 import Input from "@/components/Input";
 import Swal from "sweetalert2";
 
 import { SubmitButton } from "@/components/SubmitButton";
-import createUser from "@/libs/ServerActions";
+
 // Server action to handle user creation
 
-export default function New() {
+export default function Alta() {
   const formRef = useRef(null);
-  const router = useRouter(); // Get the router to manipulate the URL
-
-  const searchParams = useSearchParams(); // Get the search parameters
-  const status = searchParams.get("status"); // Get the status parameter from the URL
-  const message = searchParams.get("message"); // Get the message parameter if exists
   const inputContainerStyle = "w-[300px] grid grid-cols-[7rem_15rem]";
-  useEffect(() => {
-    // Use useEffect to handle query changes
-    if (status === "success") {
+
+  async function createUser(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+
+    // Create FormData from the form element
+    const formData = new FormData(event.currentTarget);
+
+    const name = formData.get("name") as string;
+    const surname = formData.get("surname") as string;
+    const phone = formData.get("phone") as string;
+    const address = formData.get("address") as string;
+    const age = formData.get("age") as string;
+
+    const options = {
+      method: "POST",
+      body: JSON.stringify({
+        name,
+        surname,
+        phone,
+        address,
+        age,
+      }),
+      headers: { "Content-Type": "application/json" },
+    };
+
+    try {
+      const res = await fetch(`/api/users`, options);
+      if (!res.ok) {
+        const errorData = await res.json();
+        throw new Error(errorData.error || "An error occurred");
+      }
+      const data = await res.json();
       Swal.fire({
         title: "Success",
         text: "User successfully created!",
         icon: "success",
         timer: 2000, // Close after 2 seconds,
         willClose: () => {
-          // Remove the status query parameter when the alert closes
-          const newSearchParams = new URLSearchParams(searchParams.toString());
-          newSearchParams.delete("status"); // Remove the status query
-          newSearchParams.delete("message"); // Remove the message query
-
           // Reset the form after successful submission
+
           if (formRef.current) {
             formRef.current.reset(); // Reset the form fields
           }
-
-          // Update the URL without refreshing the page
-          router.replace(`/alta?${newSearchParams.toString()}`);
         },
       });
-    } else if (status === "error") {
+      return data; // Return the response data
+    } catch (error) {
+      console.log(
+        `error: ${
+          error instanceof Error
+            ? error.message
+            : "An unexpected error occurred"
+        }`
+      );
+
+      const errorMessage = encodeURIComponent(
+        error instanceof Error ? error.message : "An unexpected error occurred"
+      );
+
       Swal.fire({
         title: "Error",
-        text: `There was a problem: ${message || "Unknown error"}`,
+        text: `There was a problem: ${errorMessage || "Unknown error"}`,
         icon: "error",
-        willClose: () => {
-          const newSearchParams = new URLSearchParams(searchParams.toString());
-          newSearchParams.delete("status");
-          newSearchParams.delete("message");
-          router.replace(`/alta?${newSearchParams.toString()}`);
-        },
       });
     }
-  }, [status, message]); // Trigger effect when status or message changes
+  }
 
   return (
     <form
       ref={formRef}
       id="userForm"
-      action={createUser} // Specify the server action
+      onSubmit={createUser} // Specify the server action
       className="flex flex-col items-center gap-20"
     >
       <div className="flex flex-col items-center gap-5">

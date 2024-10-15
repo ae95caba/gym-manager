@@ -1,7 +1,7 @@
 import { NextResponse, NextRequest } from "next/server";
 import { prisma } from "@/libs/prisma";
 import { Prisma } from "@prisma/client";
-
+import { revalidateTag } from "next/cache";
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
   const isOnsiteQuery = searchParams.get("onsite");
@@ -49,6 +49,7 @@ export async function POST(request: NextRequest) {
         membershipExpiry: new Date(Date.now() + 31 * 24 * 60 * 60 * 1000), // Extend by 31 days from today
       },
     });
+    revalidateTag("users");
     return NextResponse.json(newUser);
   } catch (error) {
     let statusCode = 500; // Default to 500 Internal Server Error
