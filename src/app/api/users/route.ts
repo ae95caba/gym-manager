@@ -49,7 +49,7 @@ export async function POST(request: NextRequest) {
         membershipExpiry: new Date(Date.now() + 31 * 24 * 60 * 60 * 1000), // Extend by 31 days from today
       },
     });
-    /* revalidateUsers(); */
+    revalidateUsers();
     return NextResponse.json(newUser);
   } catch (error) {
     let statusCode = 500; // Default to 500 Internal Server Error
