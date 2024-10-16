@@ -1,6 +1,10 @@
 import React from "react";
 
-export default function OnsiteStatus({ onsite }) {
+export default function OnsiteStatus({
+  onsite,
+}: {
+  onsite: boolean | undefined;
+}) {
   return (
     <>
       {onsite === undefined ? (

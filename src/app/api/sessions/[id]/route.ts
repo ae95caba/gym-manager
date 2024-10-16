@@ -28,7 +28,7 @@ export async function PUT(
       where: { id: lastSession.id }, // Update by session ID
       data: { endTime: new Date() },
     });
-    revalidateTag(`userLastSession`);
+    revalidateTag(`session`);
     return NextResponse.json(updatedSession);
   } catch (error) {
     const errorMessage =

@@ -1,22 +1,20 @@
 // src/app/New.tsx
 "use client";
 import React, { useRef, useState } from "react";
-
-import Button from "@/components/Button";
+import { useRouter } from "next/navigation";
 import Input from "@/components/Input";
 import Swal from "sweetalert2";
-
+import { revalidateUsers } from "@/libs/ServerActions";
 import { SubmitButton } from "@/components/SubmitButton";
 
 // Server action to handle user creation
 
 export default function Alta() {
   const [isPending, setIsPending] = useState(false);
-  const formRef = useRef(null);
+  const formRef = useRef<HTMLFormElement>(null);
   const inputContainerStyle = "w-[300px] grid grid-cols-[7rem_15rem]";
-
+  const router = useRouter();
   async function createUser(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault();
     setIsPending(true); // Set pending to true on submit
     // Create FormData from the form element
     const formData = new FormData(event.currentTarget);
@@ -57,6 +55,7 @@ export default function Alta() {
           if (formRef.current) {
             formRef.current.reset(); // Reset the form fields
           }
+          /*  router.refresh(); */
         },
       });
       return data; // Return the response data
@@ -87,7 +86,8 @@ export default function Alta() {
     <form
       ref={formRef}
       id="userForm"
-      onSubmit={createUser} // Specify the server action
+      onSubmit={createUser}
+      action={revalidateUsers} //this wont run if onSubmit is present
       className="flex flex-col items-center gap-20"
     >
       <div className="flex flex-col items-center gap-5">

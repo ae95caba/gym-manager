@@ -22,7 +22,7 @@ export default function IngresoSalida({
   params: IngresoSalidaParams;
 }) {
   const [onsite, setOnsite] = useState(undefined);
-  const formRef = useRef(null);
+  const formRef = useRef<HTMLFormElement>(null);
   const router = useRouter();
   const { refreshOnsiteUsers } = useSessionContext();
   const { action } = params;
@@ -33,7 +33,7 @@ export default function IngresoSalida({
   const [user, setUser] = useState<User | undefined>(undefined);
 
   useEffect(() => {
-    async function setUserOnsiteState(id) {
+    async function setUserOnsiteState(id: number) {
       const lastUserSession = await getLastUserSession(id);
       setOnsite(lastUserSession && !lastUserSession.endTime);
     }
@@ -79,7 +79,7 @@ export default function IngresoSalida({
       }
 
       const data = await res.json();
-      router.refresh();
+
       console.log(data);
 
       Swal.fire({
@@ -95,6 +95,7 @@ export default function IngresoSalida({
             formRef.current.reset(); // Reset the form fields
           }
           setUser(undefined);
+          router.refresh();
         },
       });
 

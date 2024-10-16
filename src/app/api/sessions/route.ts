@@ -69,7 +69,7 @@ export async function POST(request: NextRequest) {
         startTime: new Date(),
       },
     });
-    revalidateTag(`userLastSession`);
+    revalidateTag(`session`);
     return NextResponse.json(newSession);
   } catch (error) {
     console.log(error);

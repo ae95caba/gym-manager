@@ -6,7 +6,7 @@ import { BASE_API_URL } from "@/libs/constants";
 import { redirect } from "next/navigation";
 import { rethrowIfRedirectError } from "@/libs/functions";
 
-export default async function createUser(formData: FormData) {
+export async function createUser(formData: FormData) {
   "use server";
   const name = formData.get("name") as string;
   const surname = formData.get("surname") as string;
@@ -51,4 +51,18 @@ export default async function createUser(formData: FormData) {
     // Redirect to the error page with the error message
     redirect(`/alta?status=error&message=${errorMessage}`);
   }
+}
+
+export async function revalidateUsers() {
+  revalidateTag("users");
+  console.log(`-----------------------------------------------`);
+  console.log("revalidate ran");
+  console.log(`-----------------------------------------------`);
+}
+
+export async function revalidateSession() {
+  revalidateTag("session");
+  console.log(`-----------------------------------------------`);
+  console.log("revalidate ran");
+  console.log(`-----------------------------------------------`);
 }
