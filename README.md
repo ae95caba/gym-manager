@@ -1,3 +1,10 @@
+Finds:
+
+=e.preventDefault() cant go inside a try catch, because the form will submit before it
+-revalidate needs a page refresh, thats why using a server action with it inside a form action works, the form action will refresh
+-one can use a onSubmit and a form action at the same time but the onSubmit function can not use e.preventDefault at the beginning as usual
+because the form action will never trigger
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
